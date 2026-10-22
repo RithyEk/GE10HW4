@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GE 10A - Homework 4: Relative Clauses, Noun Clauses & Indirect Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e88c7d 0%, #d66f5c 100%);
+            min-height: 100vh;
+        }
+        .option-card {
+            transition: all 0.2s ease;
+        }
+        .option-card input[type="radio"]:checked + span {
+            background-color: #d66f5c;
+            color: white;
+            border-color: #d66f5c;
+        }
+    </style>
+</head>
+<body class="py-6 px-4 flex justify-center items-center">
+
+    <div class="w-full max-w-3xl bg-white/95 backdrop-blur-md p-6 sm:p-8 rounded-2xl shadow-2xl relative my-auto">
+        
+        <!-- Start Page Section -->
+        <div id="startPage">
+            <h1 class="text-2xl sm:text-3xl font-bold text-[#5c2c24] text-center mb-2">📘 Paññāsāstra International School (PSIS) 📘</h1>
+            <p class="text-center text-[#a85345] font-semibold mb-6">Paññāsāstra International School Grand Phnom Penh</p>
+            
+            <div class="border-2 border-dashed border-[#e6b8af] bg-[#fcf5f3] p-3 rounded-xl mb-6 text-center text-sm sm:text-base font-semibold text-[#7a3b32]">
+                LEVEL: GE10A &nbsp;|&nbsp; COURSE: CORE-ENGLISH &nbsp;|&nbsp; INSTRUCTOR: PKRE
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-5 mb-6 shadow-sm">
+                <h3 class="text-lg font-bold text-[#5c2c24] text-center mb-3">✨ Homework 4: Relative Clauses, Noun Clauses & Indirect Questions ✨</h3>
+                <ul class="list-disc pl-5 text-sm sm:text-base text-gray-700 space-y-2">
+                    <li><strong>Total Items:</strong> 25 items (4 marks each, 100 marks total).</li>
+                    <li><strong>Exercise 1 & 2:</strong> Multiple Choice Questions (MCQ) — simply click your answer.</li>
+                    <li><strong>Exercise 3:</strong> Written Indirect Questions — type your answer.</li>
+                    <li><strong>Time Limit:</strong> Strictly <strong>40 minutes</strong>. Auto-submits when time runs out.</li>
+                </ul>
+            </div>
+
+            <form id="startForm" onsubmit="startHomework(event)" class="space-y-4">
+                <div>
+                    <label for="fullName" class="block font-bold text-[#5c2c24] mb-2 text-sm sm:text-base">Enter your Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="e.g., Chan Dara" required
+                        class="w-full px-4 py-3 text-base border border-gray-300 rounded-xl focus:outline-none focus:border-[#d66f5c] focus:ring-2 focus:ring-orange-200 bg-[#fef8f6]">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-[#d66f5c] to-[#b8523f] text-white font-bold py-3.5 px-6 rounded-xl shadow-lg hover:opacity-95 transition transform active:scale-95 text-lg">
+                    Start Homework 🚀
+                </button>
+            </form>
+        </div>
+
+        <!-- Homework Content Section -->
+        <div id="homeworkContent" class="hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-center bg-[#fcf5f3] border border-[#e6b8af] p-3 rounded-xl mb-4 text-xs sm:text-sm font-semibold text-[#7a3b32]">
+                <span>Student: <span id="displayName" class="font-bold text-[#5c2c24]"></span></span>
+                <span id="timerDisplay" class="mt-1 sm:mt-0 text-[#b8523f] font-bold bg-white px-3 py-1 rounded-lg border border-orange-200">⏱️ Time Remaining: 40:00</span>
+            </div>
+
+            <form id="hwForm" onsubmit="handleFinalSubmission(event)" class="space-y-8">
+                
+                <!-- EXERCISE 1 -->
+                <div class="space-y-4">
+                    <div class="border-b pb-2">
+                        <h2 class="text-lg sm:text-xl font-bold text-[#5c2c24]">Exercise 1: Choose the Correct Answer</h2>
+                        <p class="text-xs sm:text-sm text-gray-600">Select the correct relative or noun clause word for each sentence.</p>
+                    </div>
+
+                    <div id="ex1Container" class="space-y-4"></div>
+                </div>
+
+                <!-- EXERCISE 2 -->
+                <div class="space-y-4 pt-4 border-t">
+                    <div class="border-b pb-2">
+                        <h2 class="text-lg sm:text-xl font-bold text-[#5c2c24]">Exercise 2: Identify the Clause Type</h2>
+                        <p class="text-xs sm:text-sm text-gray-600">Choose whether the underlined/bold clause is a <strong>Noun Clause</strong> or a <strong>Relative Clause</strong>.</p>
+                    </div>
+
+                    <div id="ex2Container" class="space-y-4"></div>
+                </div>
+
+                <!-- EXERCISE 3 -->
+                <div class="space-y-4 pt-4 border-t">
+                    <div class="border-b pb-2">
+                        <h2 class="text-lg sm:text-xl font-bold text-[#5c2c24]">Exercise 3: Rewrite as Indirect Questions</h2>
+                        <p class="text-xs sm:text-sm text-gray-600">Rewrite each direct question or prompt using statement word order with the words in parentheses.</p>
+                    </div>
+
+                    <div id="ex3Container" class="space-y-4"></div>
+                </div>
+
+                <div class="pt-4 text-center">
+                    <button type="submit" class="bg-[#5c2c24] hover:bg-[#421e18] text-white font-bold py-4 px-8 rounded-xl shadow-xl w-full sm:w-auto transition text-base">
+                        Final Submission 🚀
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Result Modal -->
+        <div id="resultModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+            <div id="modalCardContent" class="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 rounded-2xl shadow-2xl text-center">
+                <h2 class="text-2xl font-bold text-[#5c2c24] mb-2" id="modalTitle">Assignment Submitted!</h2>
+                <p class="text-gray-600 text-sm sm:text-base">Great effort, <span id="modalName" class="font-bold text-[#5c2c24]"></span>!</p>
+                <div class="text-3xl font-extrabold text-[#d66f5c] my-4">Your Score: <span id="scoreVal">0</span> / 100</div>
+                
+                <div id="feedbackText" class="bg-[#fcf5f3] border border-[#e6b8af] p-4 rounded-xl text-sm text-[#7a3b32] my-4 text-left"></div>
+
+                <div class="bg-red-50 border border-red-200 text-red-700 font-bold text-xs uppercase p-3 rounded-xl my-4 tracking-wider">
+                    📸 DO NOT FORGET TO SCREENSHOT THIS RESULT AND SEND IT TO YOUR TEACHER!
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                    <button type="button" onclick="openReviewMode()" class="flex-1 bg-[#d66f5c] hover:bg-[#b8523f] text-white font-bold py-3 px-4 rounded-xl shadow transition">
+                        Review Answers 👀
+                    </button>
+                    <button type="button" onclick="location.reload()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-xl shadow transition">
+                        Restart Assignment 🔄
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let studentName = "";
+        let timerInterval;
+        let timeLeft = 2400; // 40 minutes countdown
+        let userAnswersData = {};
+
+        // Question Data Definitions
+        const ex1Data = [
+            { id: "ex1_1", q: "1. I don't know _____ our English teacher will give us homework today.", options: ["who", "whether", "whose"], answer: "whether", exp: "Used for uncertainty/yes-no noun clauses (whether)." },
+            { id: "ex1_2", q: "2. The student _____ won the English quiz received a prize.", options: ["who", "where", "when"], answer: "who", exp: "Refers to the subject person ('student')." },
+            { id: "ex1_3", q: "3. My friend told me _____ he was absent yesterday.", options: ["whose", "why", "which"], answer: "why", exp: "Introduces reason in a noun clause." },
+            { id: "ex1_4", q: "4. The phone _____ I use for online classes is quite old.", options: ["where", "who", "that"], answer: "that", exp: "Refers to things/objects in a relative clause." },
+            { id: "ex1_5", q: "5. Do you know _____ the school library closes?", options: ["when", "whose", "who"], answer: "when", exp: "Refers to time in a noun clause." },
+            { id: "ex1_6", q: "6. The girl _____ brother studies in my class is very friendly.", options: ["where", "whose", "when"], answer: "whose", exp: "Shows possession for people." },
+            { id: "ex1_7", q: "7. Our teacher believes _____ we can pass the final exam.", options: ["where", "who", "that"], answer: "that", exp: "Introduces statement noun clauses after verbs like believe." }
+        ];
+
+        const ex2Data = [
+            { id: "ex2_1", q: "1. I know <span class='text-[#d66f5c] font-semibold'>what she wants for her birthday</span>.", options: ["Noun Clause", "Relative Clause"], answer: "Noun Clause", exp: "Acts as the direct object of the verb 'know'." },
+            { id: "ex2_2", q: "2. The boy <span class='text-[#d66f5c] font-semibold'>who sits next to me</span> is very funny.", options: ["Noun Clause", "Relative Clause"], answer: "Relative Clause", exp: "Describes the noun 'boy'." },
+            { id: "ex2_3", q: "3. Our teacher explained <span class='text-[#d66f5c] font-semibold'>why the answer was incorrect</span>.", options: ["Noun Clause", "Relative Clause"], answer: "Noun Clause", exp: "Acts as the object of 'explained'." },
+            { id: "ex2_4", q: "4. The movie <span class='text-[#d66f5c] font-semibold'>that we watched last weekend</span> was exciting.", options: ["Noun Clause", "Relative Clause"], answer: "Relative Clause", exp: "Describes the noun 'movie'." },
+            { id: "ex2_5", q: "5. Nobody knows <span class='text-[#d66f5c] font-semibold'>whether the school will have a holiday tomorrow</span>.", options: ["Noun Clause", "Relative Clause"], answer: "Noun Clause", exp: "Acts as the object of 'knows'." },
+            { id: "ex2_6", q: "6. The girl <span class='text-[#d66f5c] font-semibold'>whose notebook I borrowed</span> is my best friend.", options: ["Noun Clause", "Relative Clause"], answer: "Relative Clause", exp: "Describes the noun 'girl' showing possession." },
+            { id: "ex2_7", q: "7. I remember <span class='text-[#d66f5c] font-semibold'>where we bought our school uniforms</span>.", options: ["Noun Clause", "Relative Clause"], answer: "Noun Clause", exp: "Acts as the object of 'remember'." },
+            { id: "ex2_8", q: "8. The phone <span class='text-[#d66f5c] font-semibold'>that my brother bought</span> is very expensive.", options: ["Noun Clause", "Relative Clause"], answer: "Relative Clause", exp: "Describes the noun 'phone'." }
+        ];
+
+        const ex3Data = [
+            { id: "ex3_1", prompt: "1. Where can I find the answers to this exercise? (I'd like to know ...)", answer: "I'd like to know where I can find the answers to this exercise.", exp: "Simple indirect question with statement word order." },
+            { id: "ex3_2", prompt: "2. Why is our English test so difficult? (I wonder ...)", answer: "I wonder why our English test is so difficult.", exp: "Simple indirect question with subject before verb." },
+            { id: "ex3_3", prompt: "3. Will our teacher check our homework tomorrow? (I want to find out ...)", answer: "I want to find out whether our teacher will check our homework tomorrow.", exp: "Yes/No direct question uses 'whether' in indirect form." },
+            { id: "ex3_4", prompt: "4. How does my friend edit videos so professionally? (... is something I can't understand.)", answer: "How my friend edits videos so professionally is something I can't understand.", exp: "Indirect question phrase ending with 'is something...'" },
+            { id: "ex3_5", prompt: "5. When will the school announce the exam results? (I'd like to know ...)", answer: "I'd like to know when the school will announce the exam results.", exp: "Direct question time word retained with statement order." },
+            { id: "ex3_6", prompt: "6. Why do some students use their phones during class? (... is beyond me.)", answer: "Why some students use their phones during class is beyond me.", exp: "Complex indirect question acting as subject." },
+            { id: "ex3_7", prompt: "7. Where did I put my school ID card? (I can't remember ...)", answer: "I can't remember where I put my school ID card.", exp: "Past tense simple indirect question without auxiliary inversion." },
+            { id: "ex3_8", prompt: "8. Can we submit our homework online? (The main question is ...)", answer: "The main question is whether we can submit our homework online.", exp: "Complex indirect question starting with subject + be." },
+            { id: "ex3_9", prompt: "9. How can my classmate memorize so many English words? (... is something I'll never know.)", answer: "How my classmate can memorize so many English words is something I'll never know.", exp: "Modal verb placed after subject." },
+            { id: "ex3_10", prompt: "10. Will I get a high score on the final exam? (My biggest concern is ...)", answer: "My biggest concern is whether I will get a high score on the final exam.", exp: "Complex indirect question using 'whether' for yes/no query." }
+        ];
+
+        // Populate Form Dynamically
+        function buildQuizUI() {
+            // Ex 1
+            const ex1Div = document.getElementById('ex1Container');
+            ex1Data.forEach((item, index) => {
+                let html = `<div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                    <div class="font-semibold text-gray-800 mb-3 text-sm sm:text-base">${item.q}</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">`;
+                item.options.forEach(opt => {
+                    html += `<label class="option-card flex items-center space-x-2 p-2.5 border rounded-lg cursor-pointer hover:bg-orange-50 border-gray-200">
+                        <input type="radio" name="${item.id}" value="${opt}" class="text-[#d66f5c] focus:ring-orange-400">
+                        <span class="text-sm font-medium text-gray-700 w-full px-2 py-1 rounded">${opt}</span>
+                    </label>`;
+                });
+                html += `</div></div>`;
+                ex1Div.innerHTML += html;
+            });
+
+            // Ex 2
+            const ex2Div = document.getElementById('ex2Container');
+            ex2Data.forEach((item, index) => {
+                let html = `<div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                    <div class="font-semibold text-gray-800 mb-3 text-sm sm:text-base">${item.q}</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">`;
+                item.options.forEach(opt => {
+                    html += `<label class="option-card flex items-center space-x-2 p-3 border rounded-xl cursor-pointer hover:bg-orange-50 border-gray-200">
+                        <input type="radio" name="${item.id}" value="${opt}" class="text-[#d66f5c] focus:ring-orange-400">
+                        <span class="text-sm font-semibold text-gray-700 w-full text-center py-1 rounded">${opt}</span>
+                    </label>`;
+                });
+                html += `</div></div>`;
+                ex2Div.innerHTML += html;
+            });
+
+            // Ex 3
+            const ex3Div = document.getElementById('ex3Container');
+            ex3Data.forEach((item, index) => {
+                let html = `<div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                    <div class="font-semibold text-gray-800 mb-2 text-sm sm:text-base">${item.prompt}</div>
+                    <input type="text" name="${item.id}" placeholder="Type your indirect question here..." 
+                        class="w-full px-4 py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:border-[#d66f5c] focus:ring-2 focus:ring-orange-200 bg-[#fef8f6]">
+                </div>`;
+                ex3Div.innerHTML += html;
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', buildQuizUI);
+
+        function startHomework(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('fullName').value.trim();
+            if (nameInput) {
+                studentName = nameInput;
+                document.getElementById('displayName').textContent = studentName;
+                document.getElementById('startPage').classList.add('hidden');
+                document.getElementById('homeworkContent').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmit();
+                } else {
+                    let minutes = Math.floor(timeLeft / 60);
+                    let seconds = timeLeft % 60;
+                    document.getElementById('timerDisplay').textContent = 
+                        `⏱️ Time Remaining: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        function autoSubmit() {
+            const form = document.getElementById('hwForm');
+            const formData = new FormData(form);
+            processGrading(formData);
+        }
+
+        function handleFinalSubmission(event) {
+            event.preventDefault();
+            clearInterval(timerInterval);
+            const formData = new FormData(event.target);
+            processGrading(formData);
+        }
+
+        // Advanced string normalizer for iOS/Android apostrophes, capitalization, & trailing periods
+        function cleanString(str) {
+            if (!str) return "";
+            return str
+                .toLowerCase()
+                // Normalize all iOS/Android curly quotes, backticks, acute accents to standard single quote '
+                .replace(/[\u2018\u2019\u201c\u201d`´']/g, "'")
+                // Strip trailing punctuation (periods, question marks, exclamation marks)
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]+$/, '')
+                // Remove extra internal whitespace
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function processGrading(formData) {
+            let correctCount = 0;
+            userAnswersData = {};
+
+            const allItems = [...ex1Data, ...ex2Data, ...ex3Data];
+
+            allItems.forEach(item => {
+                const userVal = formData.get(item.id) || "";
+                userAnswersData[item.id] = userVal.trim();
+
+                const cleanedUser = cleanString(userVal);
+                const cleanedCorrect = cleanString(item.answer);
+
+                if (cleanedUser === cleanedCorrect) {
+                    correctCount++;
+                }
+            });
+
+            // 25 items total, 4 marks each = 100 marks max
+            let finalScore = correctCount * 4;
+
+            document.getElementById('modalName').textContent = studentName;
+            document.getElementById('scoreVal').textContent = finalScore;
+
+            let feedback = "";
+            if (finalScore <= 40) {
+                feedback = "Needs improvement! Review the rules for relative clauses, noun clauses, and statement word order in indirect questions.";
+            } else if (finalScore <= 72) {
+                feedback = "Good effort! You understand the core concepts, but double-check your sentence structures and clause types.";
+            } else if (finalScore <= 96) {
+                feedback = "Great job! You have a strong grasp of the material with only a few minor mistakes.";
+            } else {
+                feedback = "🌟 Outstanding! Perfect score! You have completely mastered Unit 10A and Unit 10B!";
+            }
+
+            document.getElementById('feedbackText').textContent = feedback;
+            document.getElementById('resultModal').classList.remove('hidden');
+            
+            // Instantly center/bring the modal card content into the center of the screen viewport
+            const modalCard = document.getElementById('modalCardContent');
+            modalCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function openReviewMode() {
+            const card = document.getElementById('modalCardContent');
+            card.style.textAlign = "left";
+
+            let html = `<h2 class="text-2xl font-bold text-[#5c2c24] mb-1">Review Answers</h2>
+                        <p class="text-gray-600 text-sm mb-4">Student: <strong>${studentName}</strong></p>
+                        <hr class="mb-4">
+                        <div class="space-y-4">`;
+
+            const allItems = [...ex1Data, ...ex2Data, ...ex3Data];
+
+            allItems.forEach((item, index) => {
+                const userAns = userAnswersData[item.id] || "(No answer)";
+                const isCorrect = cleanString(userAns) === cleanString(item.answer);
+
+                html += `<div class="p-3.5 rounded-xl border ${isCorrect ? 'bg-orange-50/50 border-orange-200' : 'bg-red-50/50 border-red-200'}">
+                    <div class="text-xs font-bold text-gray-500 mb-1">Question ${index + 1}</div>
+                    <div class="text-sm font-semibold text-gray-800 mb-2">${item.q || item.prompt}</div>
+                    <div class="text-sm">Your Answer: <span class="font-bold ${isCorrect ? 'text-[#d66f5c]' : 'text-red-600'}">${userAns}</span> ${isCorrect ? '✅' : '❌'}</div>`;
+                
+                if (!isCorrect) {
+                    html += `<div class="text-sm mt-1">Correct Answer: <span class="font-bold text-[#d66f5c]">${item.answer}</span></div>`;
+                }
+
+                html += `<div class="text-xs text-gray-600 mt-2 bg-white p-2 rounded border border-gray-100">💡 <strong>Explanation:</strong> ${item.exp}</div>
+                </div>`;
+            });
+
+            html += `</div>
+                <div class="mt-6 text-center">
+                    <button type="button" onclick="location.reload()" class="bg-[#d66f5c] hover:bg-[#b8523f] text-white font-bold py-3 px-6 rounded-xl shadow transition w-full sm:w-auto">
+                        Restart Assignment 🔄
+                    </button>
+                </div>`;
+
+            card.innerHTML = html;
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>
