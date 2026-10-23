@@ -160,21 +160,30 @@
         const ex3Data = [
             { id: "ex3_1", prompt: "1. Where can I find the answers to this exercise? (I'd like to know ...)", answer: "I'd like to know where I can find the answers to this exercise.", exp: "Simple indirect question with statement word order." },
             { id: "ex3_2", prompt: "2. Why is our English test so difficult? (I wonder ...)", answer: "I wonder why our English test is so difficult.", exp: "Simple indirect question with subject before verb." },
-            { id: "ex3_3", prompt: "3. Will our teacher check our homework tomorrow? (I want to find out ...)", answer: "I want to find out whether our teacher will check our homework tomorrow.", exp: "Yes/No direct question uses 'whether' in indirect form." },
+            { id: "ex3_3", prompt: "3. Will our teacher check our homework tomorrow? (I want to find out ...)", answer: [
+                "I want to find out whether our teacher will check our homework tomorrow.",
+                "I want to find out if our teacher will check our homework tomorrow."
+            ], displayAnswer: "I want to find out whether/if our teacher will check our homework tomorrow.", exp: "Yes/No direct question uses 'whether' or 'if' in indirect form." },
             { id: "ex3_4", prompt: "4. How does my friend edit videos so professionally? (... is something I can't understand.)", answer: "How my friend edits videos so professionally is something I can't understand.", exp: "Indirect question phrase ending with 'is something...'" },
             { id: "ex3_5", prompt: "5. When will the school announce the exam results? (I'd like to know ...)", answer: "I'd like to know when the school will announce the exam results.", exp: "Direct question time word retained with statement order." },
             { id: "ex3_6", prompt: "6. Why do some students use their phones during class? (... is beyond me.)", answer: "Why some students use their phones during class is beyond me.", exp: "Complex indirect question acting as subject." },
             { id: "ex3_7", prompt: "7. Where did I put my school ID card? (I can't remember ...)", answer: "I can't remember where I put my school ID card.", exp: "Past tense simple indirect question without auxiliary inversion." },
-            { id: "ex3_8", prompt: "8. Can we submit our homework online? (The main question is ...)", answer: "The main question is whether we can submit our homework online.", exp: "Complex indirect question starting with subject + be." },
+            { id: "ex3_8", prompt: "8. Can we submit our homework online? (The main question is ...)", answer: [
+                "The main question is whether we can submit our homework online.",
+                "The main question is if we can submit our homework online."
+            ], displayAnswer: "The main question is whether/if we can submit our homework online.", exp: "Complex indirect question starting with subject + be using whether or if." },
             { id: "ex3_9", prompt: "9. How can my classmate memorize so many English words? (... is something I'll never know.)", answer: "How my classmate can memorize so many English words is something I'll never know.", exp: "Modal verb placed after subject." },
-            { id: "ex3_10", prompt: "10. Will I get a high score on the final exam? (My biggest concern is ...)", answer: "My biggest concern is whether I will get a high score on the final exam.", exp: "Complex indirect question using 'whether' for yes/no query." }
+            { id: "ex3_10", prompt: "10. Will I get a high score on the final exam? (My biggest concern is ...)", answer: [
+                "My biggest concern is whether I will get a high score on the final exam.",
+                "My biggest concern is if I will get a high score on the final exam."
+            ], displayAnswer: "My biggest concern is whether/if I will get a high score on the final exam.", exp: "Complex indirect question using 'whether' or 'if' for yes/no query." }
         ];
 
         // Populate Form Dynamically
         function buildQuizUI() {
             // Ex 1
             const ex1Div = document.getElementById('ex1Container');
-            ex1Data.forEach((item, index) => {
+            ex1Data.forEach((item) => {
                 let html = `<div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                     <div class="font-semibold text-gray-800 mb-3 text-sm sm:text-base">${item.q}</div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">`;
@@ -190,7 +199,7 @@
 
             // Ex 2
             const ex2Div = document.getElementById('ex2Container');
-            ex2Data.forEach((item, index) => {
+            ex2Data.forEach((item) => {
                 let html = `<div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                     <div class="font-semibold text-gray-800 mb-3 text-sm sm:text-base">${item.q}</div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">`;
@@ -206,7 +215,7 @@
 
             // Ex 3
             const ex3Div = document.getElementById('ex3Container');
-            ex3Data.forEach((item, index) => {
+            ex3Data.forEach((item) => {
                 let html = `<div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                     <div class="font-semibold text-gray-800 mb-2 text-sm sm:text-base">${item.prompt}</div>
                     <input type="text" name="${item.id}" placeholder="Type your indirect question here..." 
@@ -264,11 +273,8 @@
             if (!str) return "";
             return str
                 .toLowerCase()
-                // Normalize all iOS/Android curly quotes, backticks, acute accents to standard single quote '
                 .replace(/[\u2018\u2019\u201c\u201d`´']/g, "'")
-                // Strip trailing punctuation (periods, question marks, exclamation marks)
                 .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]+$/, '')
-                // Remove extra internal whitespace
                 .replace(/\s+/g, ' ')
                 .trim();
         }
@@ -282,16 +288,20 @@
             allItems.forEach(item => {
                 const userVal = formData.get(item.id) || "";
                 userAnswersData[item.id] = userVal.trim();
-
                 const cleanedUser = cleanString(userVal);
-                const cleanedCorrect = cleanString(item.answer);
 
-                if (cleanedUser === cleanedCorrect) {
+                let isCorrect = false;
+                if (Array.isArray(item.answer)) {
+                    isCorrect = item.answer.some(ans => cleanedUser === cleanString(ans));
+                } else {
+                    isCorrect = (cleanedUser === cleanString(item.answer));
+                }
+
+                if (isCorrect) {
                     correctCount++;
                 }
             });
 
-            // 25 items total, 4 marks each = 100 marks max
             let finalScore = correctCount * 4;
 
             document.getElementById('modalName').textContent = studentName;
@@ -311,7 +321,7 @@
             document.getElementById('feedbackText').textContent = feedback;
             document.getElementById('resultModal').classList.remove('hidden');
             
-            // Instantly center/bring the modal card content into the center of the screen viewport
+            // Center the score modal precisely in the middle of the screen
             const modalCard = document.getElementById('modalCardContent');
             modalCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
@@ -329,7 +339,14 @@
 
             allItems.forEach((item, index) => {
                 const userAns = userAnswersData[item.id] || "(No answer)";
-                const isCorrect = cleanString(userAns) === cleanString(item.answer);
+                const cleanedUser = cleanString(userAns);
+
+                let isCorrect = false;
+                if (Array.isArray(item.answer)) {
+                    isCorrect = item.answer.some(ans => cleanedUser === cleanString(ans));
+                } else {
+                    isCorrect = (cleanedUser === cleanString(item.answer));
+                }
 
                 html += `<div class="p-3.5 rounded-xl border ${isCorrect ? 'bg-orange-50/50 border-orange-200' : 'bg-red-50/50 border-red-200'}">
                     <div class="text-xs font-bold text-gray-500 mb-1">Question ${index + 1}</div>
@@ -337,7 +354,8 @@
                     <div class="text-sm">Your Answer: <span class="font-bold ${isCorrect ? 'text-[#d66f5c]' : 'text-red-600'}">${userAns}</span> ${isCorrect ? '✅' : '❌'}</div>`;
                 
                 if (!isCorrect) {
-                    html += `<div class="text-sm mt-1">Correct Answer: <span class="font-bold text-[#d66f5c]">${item.answer}</span></div>`;
+                    const displayAns = item.displayAnswer || (Array.isArray(item.answer) ? item.answer[0] : item.answer);
+                    html += `<div class="text-sm mt-1">Correct Answer: <span class="font-bold text-[#d66f5c]">${displayAns}</span></div>`;
                 }
 
                 html += `<div class="text-xs text-gray-600 mt-2 bg-white p-2 rounded border border-gray-100">💡 <strong>Explanation:</strong> ${item.exp}</div>
